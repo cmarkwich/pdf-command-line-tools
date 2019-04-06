@@ -18,22 +18,22 @@ if [[ $# -eq 0 ]] ; then
     exit 1
 fi
 
-if [ ! -f ./original.pdf ]; then
+if [ ! -f ./pdf-input/original.pdf ]; then
     echo -e "${RED}FAILED! No original.pdf file was found.${NC}"
     exit 1
 fi
 
 echo Uncompressing PDF...
-pdftk original.pdf output uncompressed.pdf uncompress 
+pdftk ./pdf-input/original.pdf output ./pdf-output/uncompressed.pdf uncompress 
 echo -e "${LIGHTBLUE}PDF Uncompressed${NC}"
 
 watermark=$1
 
 echo Removing Watermark...
-sed -e "s/${watermark}/ /g" uncompressed.pdf > unwatermarked.pdf
+sed -e "s/${watermark}/ /g" ./pdf-output/uncompressed.pdf > ./pdf-output/unwatermarked.pdf
 echo -e "${LIGHTBLUE}Watermark removed${NC}"
 
 echo Creating PDF file...
-pdftk unwatermarked.pdf output fixed.pdf compress
+pdftk ./pdf-output/unwatermarked.pdf output ./pdf-output/fixed.pdf compress
 echo -e "${LIGHTBLUE}PDF Created${NC}"
 echo -e "${GREEN}All Done${NC}"
